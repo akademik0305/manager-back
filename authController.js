@@ -57,7 +57,6 @@ class AuthController {
           message: `Bu nomdagi foydalanuvchi topilmadi`
         })
       }
-      console.log(user)
 
       const validPassword = bcrypt.compareSync(password, user.password)
       if (!validPassword) {
@@ -67,7 +66,13 @@ class AuthController {
       }
 
       const token = generateToken(user._id, user.roles)
-      return res.json({token})
+      res.status(200).json({
+        message: 'Muvaffaqqiyatli tizimga kirdingiz',
+        data: {
+          username: user.username,
+          token: token
+        }
+      })
 
     } catch (e) {
       console.log(e)
