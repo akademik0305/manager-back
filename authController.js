@@ -33,7 +33,14 @@ class AuthController {
       const userRole = await Role.findOne({value: 'User'})
       const user = new User({username: username, password: passwordHash, roles: [userRole.value]})
       await user.save()
-      res.status(200).json({message: 'Foydalanuvchi muvvaffaqqitli ro`yhatdan o`tkazildi'})
+      const token = generateToken(user._id, user.roles)
+      res.status(200).json({
+        message: 'Foydalanuvchi muvvaffaqqitli ro`yhatdan o`tkazildi',
+        data: {
+          username: user.username,
+          token: token
+        }
+      })
 
     } catch (e) {
       console.log(e)
@@ -53,7 +60,7 @@ class AuthController {
       console.log(user)
 
       const validPassword = bcrypt.compareSync(password, user.password)
-      if(!validPassword) {
+      if (!validPassword) {
         return res.status(400).json({
           message: `Parol xato`
         })
