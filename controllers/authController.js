@@ -1,9 +1,9 @@
-import User from './models/User.js'
-import Role from './models/Role.js'
+import User from '../models/User.js'
+import Role from '../models/Role.js'
 import bcrypt from 'bcryptjs'
 import {validationResult} from "express-validator";
 import jwt from 'jsonwebtoken'
-import secret from './config.js'
+import secret from '../config.js'
 
 const generateToken = (id, roles) => {
   const payload = {
@@ -84,13 +84,13 @@ class AuthController {
   async getUsers(req, res) {
     try {
 
-      // const userRole = new Role()
-      // const adminRole = new Role({value: 'Admin'})
-      //
-      // await userRole.save()
-      // await adminRole.save()
-      res.json({
-        message: "server work"
+      const users = await User.find()
+      const user = await User.find({_id: req.user.id})
+
+      res.status(200).json({
+        success: true,
+        data: users,
+        user
       })
 
     } catch (e) {
