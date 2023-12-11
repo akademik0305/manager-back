@@ -23,6 +23,20 @@ class taskController {
 
   async update(req, res) {
     try {
+      const id = req.params.id
+      const task = req.body
+      const newTask = await Task.findByIdAndUpdate(id, task, {new: true})
+
+      if(!newTask) {
+        return res.status(404).json({
+          message: 'Vazifa topilmadi'
+        })
+      }
+
+      res.status(200).json({
+        message: 'success',
+        data: newTask
+      })
 
 
     } catch (e) {

@@ -11,7 +11,7 @@ const generateToken = (id, roles) => {
     roles
   }
 
-  return jwt.sign(payload, 'secret', {expiresIn: '24h'})
+  return jwt.sign(payload, 'secret', {expiresIn: '240h'})
 }
 
 class AuthController {
@@ -36,6 +36,7 @@ class AuthController {
       const token = generateToken(user._id, user.roles)
       res.status(200).json({
         message: 'Foydalanuvchi muvvaffaqqitli ro`yhatdan o`tkazildi',
+        success: true,
         data: {
           username: user.username,
           token: token
@@ -68,6 +69,7 @@ class AuthController {
       const token = generateToken(user._id, user.roles)
       res.status(200).json({
         message: 'Muvaffaqqiyatli tizimga kirdingiz',
+        success: true,
         data: {
           username: user.username,
           token: token
