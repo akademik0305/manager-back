@@ -26,7 +26,10 @@ class AuthController {
       const candidate = await User.findOne({username})
 
       if (candidate) {
-        res.status(400).json({message: 'Bu foydalanuvchi avval ro`yhatdan o`tgan, boshqa nom kiriting'})
+        res.status(400).json({
+          success: false,
+          message: 'Bu foydalanuvchi avval ro`yhatdan o`tgan, boshqa nom kiriting'
+        })
       }
 
       const passwordHash = bcrypt.hashSync(password, 7)
@@ -45,7 +48,9 @@ class AuthController {
 
     } catch (e) {
       console.log(e)
-      res.status(400).json({message: 'Ro`yhatdan o`tishda xatolik'})
+      res.status(400).json({
+        success: false,
+        message: 'Ro`yhatdan o`tishda xatolik'})
     }
   }
 
@@ -55,6 +60,7 @@ class AuthController {
       const user = await User.findOne({username: username})
       if (!user) {
         return res.status(400).json({
+          success: false,
           message: `Bu nomdagi foydalanuvchi topilmadi`
         })
       }
@@ -62,6 +68,7 @@ class AuthController {
       const validPassword = bcrypt.compareSync(password, user.password)
       if (!validPassword) {
         return res.status(400).json({
+          success: false,
           message: `Parol xato`
         })
       }
@@ -78,7 +85,9 @@ class AuthController {
 
     } catch (e) {
       console.log(e)
-      res.status(400).json({message: 'Tizimga kirishda xatolik', e})
+      res.status(400).json({
+        success: false,
+        message: 'Tizimga kirishda xatolik', e})
     }
 
   }

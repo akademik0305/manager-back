@@ -1,4 +1,5 @@
 import Task from "../models/Task.js";
+import Category from "../models/Category.js";
 
 class taskController {
 
@@ -6,18 +7,25 @@ class taskController {
     try {
       const {title, description} = req.body
       const user_id = req.user.id
+      const category = await Category.findOne({key: 'dont_know'})
 
-      const task = new Task({title, description, user_id})
+      const task = new Task({title, description, user_id, category_key: category.key})
       await task.save()
 
       res.status(200).json({
+        success: true,
         message: 'success',
         data: {task}
       })
 
     } catch (e) {
       console.log(e)
-      res.status(400).json({message: 'error'})
+      res.status(400).json(
+        {
+          success: false,
+          message: 'error'
+        }
+      )
     }
   }
 
@@ -27,13 +35,15 @@ class taskController {
       const task = req.body
       const newTask = await Task.findByIdAndUpdate(id, task, {new: true})
 
-      if(!newTask) {
+      if (!newTask) {
         return res.status(404).json({
+          success: false,
           message: 'Vazifa topilmadi'
         })
       }
 
       res.status(200).json({
+        success: true,
         message: 'success',
         data: newTask
       })
@@ -41,7 +51,12 @@ class taskController {
 
     } catch (e) {
       console.log(e)
-      res.status(400).json({message: 'error'})
+      res.status(400).json(
+        {
+          success: false,
+          message: 'error'
+        }
+      )
     }
   }
 
@@ -50,21 +65,28 @@ class taskController {
       const user_id = req.user.id
       const tasks = await Task.find({user_id})
 
-      if(!tasks) {
+      if (!tasks) {
         return res.status(400).json({
+          success: false,
           message: 'Malumot topilmadi',
           data: tasks
         })
       }
 
       res.status(200).json({
+        success: true,
         message: 'success',
         data: tasks
       })
 
     } catch (e) {
       console.log(e)
-      res.status(400).json({message: 'error'})
+      res.status(400).json(
+        {
+          success: false,
+          message: 'error'
+        }
+      )
     }
   }
 }
