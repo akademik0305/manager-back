@@ -11,7 +11,7 @@ const generateToken = (id, roles) => {
     roles
   }
 
-  return jwt.sign(payload, 'secret', {expiresIn: '240h'})
+  return jwt.sign(payload, 'secret', {expiresIn: '24h'})
 }
 
 class AuthController {
@@ -26,7 +26,7 @@ class AuthController {
       const candidate = await User.findOne({username})
 
       if (candidate) {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
           message: 'Bu foydalanuvchi avval ro`yhatdan o`tgan, boshqa nom kiriting'
         })

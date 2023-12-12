@@ -2,10 +2,10 @@ import express from 'express'
 import mongoose from 'mongoose';
 import cors from 'cors'
 
-
 // routers
 import authRouter from './router/authRouter.js';
 import taskRouter from './router/taskRouter.js'
+import categoryRouter from "./router/categoryRouter.js";
 
 const PORT = process.env.PORT || 5000
 const app = express()
@@ -14,6 +14,7 @@ app.use(express.json())
 app.use(cors())
 app.use('/auth', authRouter)
 app.use('/task', taskRouter)
+app.use('/categories', categoryRouter)
 
 app.get('/', (req, res) => {
   res.json({
